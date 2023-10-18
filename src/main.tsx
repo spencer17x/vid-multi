@@ -1,18 +1,25 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import './styles/index.scss';
+
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/locale/zh_CN';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+import ReactDOM from 'react-dom/client';
+
+import App from './App.tsx';
+
+dayjs.extend(duration);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+	<ConfigProvider locale={zhCN}>
+		<App />
+	</ConfigProvider>
+);
 
 // Remove Preload scripts loading
-postMessage({ payload: 'removeLoading' }, '*')
+postMessage({ payload: 'removeLoading' }, '*');
 
 // Use contextBridge
 window.ipcRenderer.on('main-process-message', (_event, message) => {
-  console.log(message)
-})
+	console.log(message);
+});
