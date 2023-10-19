@@ -1,7 +1,17 @@
 import './index.scss';
 
 import { InboxOutlined } from '@ant-design/icons';
-import { Button, ButtonProps, Spin, Table, Upload, UploadProps } from 'antd';
+import { FFmpeg } from '@ffmpeg/ffmpeg';
+import { fetchFile, toBlobURL } from '@ffmpeg/util';
+import {
+	Button,
+	ButtonProps,
+	message,
+	Spin,
+	Table,
+	Upload,
+	UploadProps
+} from 'antd';
 import { TableProps } from 'antd/es/table/InternalTable';
 import dayjs from 'dayjs';
 import MediaInfoFactory, { MediaInfo, MediaInfoType } from 'mediainfo.js';
@@ -23,13 +33,13 @@ export const TruncatedFrame = () => {
 	const [loaded, setLoaded] = useState(false);
 	const [uploaded, setUploaded] = useState(false);
 	const [result, setResult] = useState<MediaInfoType>();
-	const [playUrl, setPlayUrl] = useState<string>('');
+	const [videoFile, setVideoFile] = useState<File>();
+
+	const ffmpegRef = useRef<FFmpeg>();
 
 	useEffect(() => {
-		setLoaded(false);
 		MediaInfoFactory({ format: 'object' }).then((mi) => {
 			miRef.current = mi;
-			setLoaded(true);
 		});
 
 		return () => {
@@ -39,20 +49,66 @@ export const TruncatedFrame = () => {
 		};
 	}, []);
 
+	useEffect(() => {
+		const ffmpeg = new FFmpeg();
+		ffmpegRef.current = ffmpeg;
+		const load = async () => {
+			setLoaded(false);
+			const baseURL = 'https://unpkg.com/@ffmpeg/core-mt@0.12.4/dist/esm';
+			ffmpeg.on('log', ({ message }) => {
+				console.log(message);
+			});
+			// toBlobURL is used to bypass CORS issue, urls with the same
+			// domain can be used directly.
+			await ffmpeg.load({
+				coreURL: await toBlobURL(
+					`${baseURL}/ffmpeg-core.js`,
+					'text/javascript'
+				),
+				wasmURL: await toBlobURL(
+					`${baseURL}/ffmpeg-core.wasm`,
+					'application/wasm'
+				),
+				workerURL: await toBlobURL(
+					`${baseURL}/ffmpeg-core.worker.js`,
+					'text/javascript'
+				)
+			});
+			setLoaded(true);
+		};
+
+		load().then(() => {});
+	}, []);
+
 	const onBeforeUpload: UploadProps<File>['beforeUpload'] = async (file) => {
 		if (miRef.current) {
 			const result = await getMetadata(miRef.current, file);
 			console.log('result', result);
+			console.log('file', file);
 			setResult(result);
 			setUploaded(true);
-			setPlayUrl(URL.createObjectURL(file));
+			setVideoFile(file);
 		}
 		return false;
 	};
 
 	const onPlayVideo: ButtonProps['onClick'] = () => {};
 
-	const onStartFrameCutting: ButtonProps['onClick'] = () => {};
+	const onStartFrameCutting: ButtonProps['onClick'] = async () => {
+		const ffmpeg = ffmpegRef.current;
+		if (!ffmpeg) {
+			throw new Error('ffmpeg is not loaded');
+		}
+		const hide = message.loading('Processing...', 0);
+		await ffmpeg.writeFile(`${videoFile?.name}`, await fetchFile(videoFile));
+		await ffmpeg.exec([
+			'-i',
+			videoFile?.path || '',
+			'-vf',
+			`fps=${generalInfo?.FrameRate}`
+		]);
+		hide();
+	};
 
 	const generalInfo = useMemo(() => {
 		return result?.media?.track.find((track) => track['@type'] === 'General');
