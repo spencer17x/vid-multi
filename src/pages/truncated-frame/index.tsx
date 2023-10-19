@@ -54,9 +54,9 @@ export const TruncatedFrame = () => {
 		ffmpegRef.current = ffmpeg;
 		const load = async () => {
 			setLoaded(false);
-			const baseURL = 'https://unpkg.com/@ffmpeg/core-mt@0.12.4/dist/esm';
+			const baseURL = '.';
 			ffmpeg.on('log', ({ message }) => {
-				console.log(message);
+				console.log('message', message);
 			});
 			// toBlobURL is used to bypass CORS issue, urls with the same
 			// domain can be used directly.
@@ -100,13 +100,16 @@ export const TruncatedFrame = () => {
 			throw new Error('ffmpeg is not loaded');
 		}
 		const hide = message.loading('Processing...', 0);
-		await ffmpeg.writeFile(`${videoFile?.name}`, await fetchFile(videoFile));
-		await ffmpeg.exec([
+		const filename = videoFile?.name || '';
+		await ffmpeg.writeFile(filename, await fetchFile(videoFile));
+		const result = await ffmpeg.exec([
 			'-i',
-			videoFile?.path || '',
+			filename,
 			'-vf',
-			`fps=${generalInfo?.FrameRate}`
+			`fps=${generalInfo?.FrameRate}`,
+			'output_%04d.jpg'
 		]);
+		console.log('result', result);
 		hide();
 	};
 
