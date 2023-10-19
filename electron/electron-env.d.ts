@@ -21,7 +21,16 @@ declare namespace NodeJS {
 	}
 }
 
-interface ElectronAPI {}
+interface GenerateImagesParams {
+	filePath: string;
+	count: number;
+	filename: string;
+}
+
+interface ElectronAPI {
+	generateImages: (params: GenerateImagesParams) => Promise<string>;
+	openFolder: (dir: string) => void;
+}
 
 // Used in Renderer process, expose in `preload.ts`
 interface Window {

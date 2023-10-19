@@ -12,7 +12,14 @@ export default defineConfig({
 		electron({
 			main: {
 				// Shortcut of `build.lib.entry`.
-				entry: 'electron/main.ts'
+				entry: 'electron/main.ts',
+				vite: {
+					resolve: {
+						alias: {
+							'./lib-cov/fluent-ffmpeg': './lib/fluent-ffmpeg'
+						}
+					}
+				}
 			},
 			preload: {
 				// Shortcut of `build.rollupOptions.input`.
@@ -37,14 +44,5 @@ export default defineConfig({
 				}
 			]
 		})
-	],
-	optimizeDeps: {
-		exclude: ['@ffmpeg/ffmpeg', '@ffmpeg/util']
-	},
-	server: {
-		headers: {
-			'Cross-Origin-Opener-Policy': 'same-origin',
-			'Cross-Origin-Embedder-Policy': 'require-corp'
-		}
-	}
+	]
 });

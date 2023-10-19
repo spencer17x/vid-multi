@@ -1,6 +1,8 @@
-import path from 'node:path';
-
-import { app, BrowserWindow } from 'electron';
+import { spawnSync } from 'child_process';
+import { app, BrowserWindow, ipcMain } from 'electron';
+import ffmpeg from 'fluent-ffmpeg';
+import fs from 'fs';
+import path from 'path';
 
 // The built directory structure
 //
@@ -20,6 +22,48 @@ let win: BrowserWindow | null;
 // 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
 const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL'];
 
+const runCMD = (command: string, args: string[]) => {
+	return spawnSync(command, args, {
+		stdio: 'inherit',
+		shell: true
+	});
+};
+
+const ipc = () => {
+	ipcMain.handle(
+		'generateImages',
+		async (_event, params: GenerateImagesParams) => {
+			const { filePath, count, filename } = params;
+			const outputDir = path.join('./output', filename.replace(/\.[^.]*$/, ''));
+			fs.mkdirSync(outputDir, { recursive: true });
+
+			return new Promise((resolve, reject) => {
+				ffmpeg(filePath)
+					.on('filenames', (filenames) => {
+						console.log('Will generate ' + filenames.join(', '));
+					})
+					.on('end', () => {
+						resolve(outputDir);
+					})
+					.on('error', (error) => {
+						reject(error);
+					})
+					.screenshots({
+						count,
+						folder: outputDir,
+						filename: '%i.png'
+					});
+			});
+		}
+	);
+
+	ipcMain.on('openFolder', (_event, dir: string) => {
+		const openFolderCommand =
+			process.platform === 'win32' ? 'explorer' : 'open';
+		runCMD(openFolderCommand, [dir]);
+	});
+};
+
 function createWindow() {
 	win = new BrowserWindow({
 		icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
@@ -27,6 +71,8 @@ function createWindow() {
 			preload: path.join(__dirname, 'preload.js')
 		}
 	});
+
+	win.webContents.openDevTools();
 
 	// Test active push message to Renderer-process.
 	win.webContents.on('did-finish-load', () => {
@@ -39,6 +85,8 @@ function createWindow() {
 		// win.loadFile('dist/index.html')
 		win.loadFile(path.join(process.env.DIST, 'index.html'));
 	}
+
+	ipc();
 }
 
 // Quit when all windows are closed, except on macOS. There, it's common

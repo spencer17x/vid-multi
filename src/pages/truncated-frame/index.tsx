@@ -1,12 +1,13 @@
 import './index.scss';
 
 import { InboxOutlined } from '@ant-design/icons';
-import { FFmpeg } from '@ffmpeg/ffmpeg';
-import { fetchFile, toBlobURL } from '@ffmpeg/util';
 import {
 	Button,
 	ButtonProps,
+	InputNumber,
+	InputNumberProps,
 	message,
+	Modal,
 	Spin,
 	Table,
 	Upload,
@@ -30,12 +31,11 @@ type RecordType = {
 
 export const TruncatedFrame = () => {
 	const miRef = useRef<MediaInfo>();
-	const [loaded, setLoaded] = useState(false);
 	const [uploaded, setUploaded] = useState(false);
 	const [result, setResult] = useState<MediaInfoType>();
 	const [videoFile, setVideoFile] = useState<File>();
-
-	const ffmpegRef = useRef<FFmpeg>();
+	const [generating, setGenerating] = useState(false);
+	const [count, setCount] = useState(10);
 
 	useEffect(() => {
 		MediaInfoFactory({ format: 'object' }).then((mi) => {
@@ -49,42 +49,9 @@ export const TruncatedFrame = () => {
 		};
 	}, []);
 
-	useEffect(() => {
-		const ffmpeg = new FFmpeg();
-		ffmpegRef.current = ffmpeg;
-		const load = async () => {
-			setLoaded(false);
-			const baseURL = '.';
-			ffmpeg.on('log', ({ message }) => {
-				console.log('message', message);
-			});
-			// toBlobURL is used to bypass CORS issue, urls with the same
-			// domain can be used directly.
-			await ffmpeg.load({
-				coreURL: await toBlobURL(
-					`${baseURL}/ffmpeg-core.js`,
-					'text/javascript'
-				),
-				wasmURL: await toBlobURL(
-					`${baseURL}/ffmpeg-core.wasm`,
-					'application/wasm'
-				),
-				workerURL: await toBlobURL(
-					`${baseURL}/ffmpeg-core.worker.js`,
-					'text/javascript'
-				)
-			});
-			setLoaded(true);
-		};
-
-		load().then(() => {});
-	}, []);
-
 	const onBeforeUpload: UploadProps<File>['beforeUpload'] = async (file) => {
 		if (miRef.current) {
 			const result = await getMetadata(miRef.current, file);
-			console.log('result', result);
-			console.log('file', file);
 			setResult(result);
 			setUploaded(true);
 			setVideoFile(file);
@@ -95,22 +62,34 @@ export const TruncatedFrame = () => {
 	const onPlayVideo: ButtonProps['onClick'] = () => {};
 
 	const onStartFrameCutting: ButtonProps['onClick'] = async () => {
-		const ffmpeg = ffmpegRef.current;
-		if (!ffmpeg) {
-			throw new Error('ffmpeg is not loaded');
+		if (!videoFile) {
+			throw new Error('videoFile is not loaded');
 		}
-		const hide = message.loading('Processing...', 0);
-		const filename = videoFile?.name || '';
-		await ffmpeg.writeFile(filename, await fetchFile(videoFile));
-		const result = await ffmpeg.exec([
-			'-i',
-			filename,
-			'-vf',
-			`fps=${generalInfo?.FrameRate}`,
-			'output_%04d.jpg'
-		]);
-		console.log('result', result);
-		hide();
+
+		try {
+			setGenerating(true);
+			const outputDir = await window.electronAPI.generateImages({
+				filePath: videoFile.path,
+				count,
+				filename: videoFile.name
+			});
+			Modal.confirm({
+				title: 'Generate success, open or not',
+				onOk() {
+					window.electronAPI.openFolder(outputDir);
+				}
+			});
+		} catch (error) {
+			const errMsg = error instanceof Error ? error.message : 'Unknown error';
+			message.error(errMsg);
+			console.error(error);
+		} finally {
+			setGenerating(false);
+		}
+	};
+
+	const onCountChange: InputNumberProps<number>['onChange'] = (value) => {
+		setCount(value || 10);
 	};
 
 	const generalInfo = useMemo(() => {
@@ -143,7 +122,7 @@ export const TruncatedFrame = () => {
 
 	return (
 		<div className="truncated-frame">
-			<Spin spinning={!loaded}>
+			<Spin spinning={false}>
 				<div className="truncated-frame-container">
 					<Dragger
 						className="truncated-frame-dragger"
@@ -166,16 +145,19 @@ export const TruncatedFrame = () => {
 								columns={columns}
 								pagination={false}
 							/>
-							<Button type="primary" onClick={onPlayVideo}>
+							<Button type="primary" disabled={true} onClick={onPlayVideo}>
 								Play video
 							</Button>
-							<Button type="primary" onClick={onStartFrameCutting}>
+							<InputNumber value={count} onChange={onCountChange} />
+							<Button
+								loading={generating}
+								type="primary"
+								onClick={onStartFrameCutting}
+							>
 								Start frame cutting
 							</Button>
 						</div>
 					)}
-
-					<div className="truncated-frame-list" />
 				</div>
 			</Spin>
 		</div>

@@ -1,7 +1,10 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 // --------- Expose some API to the Renderer process ---------
-const electronAPI: ElectronAPI = {};
+const electronAPI: ElectronAPI = {
+	generateImages: (params) => ipcRenderer.invoke('generateImages', params),
+	openFolder: (dir) => ipcRenderer.send('openFolder', dir)
+};
 contextBridge.exposeInMainWorld('ipcRenderer', withPrototype(ipcRenderer));
 contextBridge.exposeInMainWorld('electronAPI', electronAPI);
 
