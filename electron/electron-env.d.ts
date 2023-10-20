@@ -1,5 +1,4 @@
 /// <reference types="vite-plugin-electron/electron-env" />
-
 declare namespace NodeJS {
 	interface ProcessEnv {
 		/**
@@ -25,11 +24,14 @@ interface GenerateImagesParams {
 	filePath: string;
 	count: number;
 	filename: string;
+	outputDir: string;
 }
 
 interface ElectronAPI {
 	generateImages: (params: GenerateImagesParams) => Promise<string>;
 	openFolder: (dir: string) => void;
+	getOutputDir: () => Promise<string>;
+	setOutputDir: () => Promise<string>;
 }
 
 // Used in Renderer process, expose in `preload.ts`

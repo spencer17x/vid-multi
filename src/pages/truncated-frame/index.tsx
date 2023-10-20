@@ -4,10 +4,12 @@ import { InboxOutlined } from '@ant-design/icons';
 import {
 	Button,
 	ButtonProps,
+	Input,
 	InputNumber,
 	InputNumberProps,
 	message,
 	Modal,
+	Space,
 	Spin,
 	Table,
 	Upload,
@@ -31,11 +33,18 @@ type RecordType = {
 
 export const TruncatedFrame = () => {
 	const miRef = useRef<MediaInfo>();
-	const [uploaded, setUploaded] = useState(false);
+	const [uploaded, setUploaded] = useState<boolean>(false);
 	const [result, setResult] = useState<MediaInfoType>();
 	const [videoFile, setVideoFile] = useState<File>();
-	const [generating, setGenerating] = useState(false);
-	const [count, setCount] = useState(10);
+	const [generating, setGenerating] = useState<boolean>(false);
+	const [count, setCount] = useState<number>(10);
+	const [outputDir, setOutputDir] = useState<string>('');
+
+	useEffect(() => {
+		window.electronAPI
+			.getOutputDir()
+			.then((outputDir) => setOutputDir(outputDir));
+	}, []);
 
 	useEffect(() => {
 		MediaInfoFactory({ format: 'object' }).then((mi) => {
@@ -59,8 +68,6 @@ export const TruncatedFrame = () => {
 		return false;
 	};
 
-	const onPlayVideo: ButtonProps['onClick'] = () => {};
-
 	const onStartFrameCutting: ButtonProps['onClick'] = async () => {
 		if (!videoFile) {
 			throw new Error('videoFile is not loaded');
@@ -68,10 +75,16 @@ export const TruncatedFrame = () => {
 
 		try {
 			setGenerating(true);
-			const outputDir = await window.electronAPI.generateImages({
-				filePath: videoFile.path,
+			const { path: filePath, name: filename } = videoFile;
+			const fullOutputDir = `${outputDir}/${videoFile.name.replace(
+				/\.[^.]*$/,
+				''
+			)}`;
+			await window.electronAPI.generateImages({
+				filePath,
 				count,
-				filename: videoFile.name
+				filename,
+				outputDir: fullOutputDir
 			});
 			Modal.confirm({
 				title: 'Generate success, open or not',
@@ -90,6 +103,11 @@ export const TruncatedFrame = () => {
 
 	const onCountChange: InputNumberProps<number>['onChange'] = (value) => {
 		setCount(value || 10);
+	};
+
+	const onDirectoryClick: ButtonProps['onClick'] = async () => {
+		const outputDir = await window.electronAPI.setOutputDir();
+		setOutputDir(outputDir);
 	};
 
 	const generalInfo = useMemo(() => {
@@ -124,6 +142,19 @@ export const TruncatedFrame = () => {
 		<div className="truncated-frame">
 			<Spin spinning={false}>
 				<div className="truncated-frame-container">
+					<Space.Compact style={{ width: '100%' }}>
+						<Input disabled={true} value={outputDir} />
+						<Button type="primary" onClick={onDirectoryClick}>
+							Change directory
+						</Button>
+						<Button
+							type="primary"
+							onClick={() => window.electronAPI.openFolder(outputDir)}
+						>
+							Open directory
+						</Button>
+					</Space.Compact>
+
 					<Dragger
 						className="truncated-frame-dragger"
 						name="file"
@@ -145,10 +176,11 @@ export const TruncatedFrame = () => {
 								columns={columns}
 								pagination={false}
 							/>
-							<Button type="primary" disabled={true} onClick={onPlayVideo}>
-								Play video
-							</Button>
-							<InputNumber value={count} onChange={onCountChange} />
+							<InputNumber
+								addonAfter="pieces"
+								value={count}
+								onChange={onCountChange}
+							/>
 							<Button
 								loading={generating}
 								type="primary"

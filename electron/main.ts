@@ -1,5 +1,5 @@
 import { spawnSync } from 'child_process';
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import ffmpeg from 'fluent-ffmpeg';
 import fs from 'fs';
 import path from 'path';
@@ -29,12 +29,11 @@ const runCMD = (command: string, args: string[]) => {
 	});
 };
 
-const ipc = () => {
+const ipcGenerateImages = () => {
 	ipcMain.handle(
 		'generateImages',
 		async (_event, params: GenerateImagesParams) => {
-			const { filePath, count, filename } = params;
-			const outputDir = path.join('./output', filename.replace(/\.[^.]*$/, ''));
+			const { filePath, count, outputDir } = params;
 			fs.mkdirSync(outputDir, { recursive: true });
 
 			return new Promise((resolve, reject) => {
@@ -56,12 +55,41 @@ const ipc = () => {
 			});
 		}
 	);
+};
 
+const ipcOpenFolder = () => {
 	ipcMain.on('openFolder', (_event, dir: string) => {
 		const openFolderCommand =
 			process.platform === 'win32' ? 'explorer' : 'open';
 		runCMD(openFolderCommand, [dir]);
 	});
+};
+
+const ipcGetOutputDir = () => {
+	ipcMain.handle('getOutputDir', async () => {
+		const outputDir = path.resolve(__dirname, '../output');
+		fs.mkdirSync(outputDir, { recursive: true });
+		return outputDir;
+	});
+};
+
+const ipcSetOutputDir = () => {
+	ipcMain.handle('setOutputDir', async () => {
+		const result = await dialog.showOpenDialog({
+			properties: ['openDirectory']
+		});
+		if (result.canceled) {
+			return Promise.reject('User canceled');
+		}
+		return result.filePaths[0];
+	});
+};
+
+const ipc = () => {
+	ipcGenerateImages();
+	ipcOpenFolder();
+	ipcGetOutputDir();
+	ipcSetOutputDir();
 };
 
 function createWindow() {
