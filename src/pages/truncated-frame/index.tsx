@@ -37,7 +37,7 @@ export const TruncatedFrame = () => {
 	const [result, setResult] = useState<MediaInfoType>();
 	const [videoFile, setVideoFile] = useState<File>();
 	const [generating, setGenerating] = useState<boolean>(false);
-	const [count, setCount] = useState<number>(10);
+	const [fps, setFPS] = useState<number>(1);
 	const [outputDir, setOutputDir] = useState<string>('');
 
 	useEffect(() => {
@@ -82,14 +82,14 @@ export const TruncatedFrame = () => {
 			)}`;
 			await window.electronAPI.generateImages({
 				filePath,
-				count,
+				fps,
 				filename,
 				outputDir: fullOutputDir
 			});
 			Modal.confirm({
 				title: 'Generate success, open or not',
 				onOk() {
-					window.electronAPI.openFolder(outputDir);
+					openDirectory();
 				}
 			});
 		} catch (error) {
@@ -101,13 +101,19 @@ export const TruncatedFrame = () => {
 		}
 	};
 
-	const onCountChange: InputNumberProps<number>['onChange'] = (value) => {
-		setCount(value || 10);
+	const onFPSChange: InputNumberProps<number>['onChange'] = (value) => {
+		setFPS(value || 1);
 	};
 
-	const onDirectoryClick: ButtonProps['onClick'] = async () => {
+	const onChangeDirectoryClick: ButtonProps['onClick'] = async () => {
 		const outputDir = await window.electronAPI.setOutputDir();
 		setOutputDir(outputDir);
+	};
+
+	const openDirectory = () => {
+		window.electronAPI
+			.openFolder(outputDir)
+			.catch((error) => message.error(error.message));
 	};
 
 	const generalInfo = useMemo(() => {
@@ -144,13 +150,10 @@ export const TruncatedFrame = () => {
 				<div className="truncated-frame-container">
 					<Space.Compact style={{ width: '100%' }}>
 						<Input disabled={true} value={outputDir} />
-						<Button type="primary" onClick={onDirectoryClick}>
+						<Button type="primary" onClick={onChangeDirectoryClick}>
 							Change directory
 						</Button>
-						<Button
-							type="primary"
-							onClick={() => window.electronAPI.openFolder(outputDir)}
-						>
+						<Button type="primary" onClick={openDirectory}>
 							Open directory
 						</Button>
 					</Space.Compact>
@@ -177,9 +180,9 @@ export const TruncatedFrame = () => {
 								pagination={false}
 							/>
 							<InputNumber
-								addonAfter="pieces"
-								value={count}
-								onChange={onCountChange}
+								addonAfter="fps"
+								value={fps}
+								onChange={onFPSChange}
 							/>
 							<Button
 								loading={generating}

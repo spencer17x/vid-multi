@@ -3,7 +3,7 @@ import { contextBridge, ipcRenderer } from 'electron';
 // --------- Expose some API to the Renderer process ---------
 const electronAPI: ElectronAPI = {
 	generateImages: (params) => ipcRenderer.invoke('generateImages', params),
-	openFolder: (dir) => ipcRenderer.send('openFolder', dir),
+	openFolder: (dir) => ipcRenderer.invoke('openFolder', dir),
 	getOutputDir: () => ipcRenderer.invoke('getOutputDir'),
 	setOutputDir: () => ipcRenderer.invoke('setOutputDir')
 };

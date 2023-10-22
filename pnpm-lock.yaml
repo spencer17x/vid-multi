@@ -2,9 +2,6 @@ lockfileVersion: 5.4
 
 specifiers:
   '@ant-design/icons': ^5.2.6
-  '@ffmpeg/ffmpeg': ^0.12.7
-  '@ffmpeg/util': ^0.12.1
-  '@types/fluent-ffmpeg': ^2.1.23
   '@types/react': ^18.2.21
   '@types/react-dom': ^18.2.7
   '@typescript-eslint/eslint-plugin': ^6.6.0
@@ -18,7 +15,6 @@ specifiers:
   eslint-plugin-react-hooks: ^4.6.0
   eslint-plugin-react-refresh: ^0.4.3
   eslint-plugin-simple-import-sort: ^10.0.0
-  fluent-ffmpeg: ^2.1.2
   mediainfo.js: ^0.2.1
   prettier: ^3.0.3
   react: ^18.2.0
@@ -32,17 +28,13 @@ specifiers:
 
 dependencies:
   '@ant-design/icons': 5.2.6_biqbaboplfbrettd7655fr4n2y
-  '@ffmpeg/ffmpeg': 0.12.7
-  '@ffmpeg/util': 0.12.1
   antd: 5.10.1_biqbaboplfbrettd7655fr4n2y
   dayjs: 1.11.10
-  fluent-ffmpeg: 2.1.2
   mediainfo.js: 0.2.1
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
 
 devDependencies:
-  '@types/fluent-ffmpeg': 2.1.23
   '@types/react': 18.2.28
   '@types/react-dom': 18.2.13
   '@typescript-eslint/eslint-plugin': 6.7.5_dptsdsdrndgxcj374v5aqgxpeq
@@ -684,23 +676,6 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@ffmpeg/ffmpeg/0.12.7:
-    resolution: {integrity: sha512-Uw9h1tNU4/Q4YRrgBKvnKiH5gpL+nl8h4HRfvSK0K93MqVOan6Qs3Lj82l9i1qj6xQLPramXw0Wl6g65W4pfnA==}
-    engines: {node: '>=18.x'}
-    dependencies:
-      '@ffmpeg/types': 0.12.2
-    dev: false
-
-  /@ffmpeg/types/0.12.2:
-    resolution: {integrity: sha512-NJtxwPoLb60/z1Klv0ueshguWQ/7mNm106qdHkB4HL49LXszjhjCCiL+ldHJGQ9ai2Igx0s4F24ghigy//ERdA==}
-    engines: {node: '>=16.x'}
-    dev: false
-
-  /@ffmpeg/util/0.12.1:
-    resolution: {integrity: sha512-10jjfAKWaDyb8+nAkijcsi9wgz/y26LOc1NKJradNMyCIl6usQcBbhkjX5qhALrSBcOy6TOeksunTYa+a03qNQ==}
-    engines: {node: '>=18.x'}
-    dev: false
-
   /@humanwhocodes/config-array/0.11.11:
     resolution: {integrity: sha512-N2brEuAadi0CcdeMXUkhbZB84eskAc8MEX1By6qEchoVywSgXPIjou4rYsl0V3Hj0ZnuGycGCjdNgockbzeWNA==}
     engines: {node: '>=10.10.0'}
@@ -944,12 +919,6 @@ packages:
     resolution: {integrity: sha512-8Hz50m2eoS56ldRlepxSBa6PWEVCtzUo/92HgLc2qTMnotJNIm7xP+UZhyWoYsyOdd5dxZ+NZLb24rsKyFs2ow==}
     dependencies:
       '@types/ms': 0.7.32
-    dev: true
-
-  /@types/fluent-ffmpeg/2.1.23:
-    resolution: {integrity: sha512-ZEogBz8YpWflRox2uzGUNOYolQPUDGMNUFhf6fY/cW+6i00oeSTD0tYf4az6/162jv0YsRYi6uxigssnag7E7A==}
-    dependencies:
-      '@types/node': 20.8.6
     dev: true
 
   /@types/fs-extra/9.0.13:
@@ -1394,6 +1363,7 @@ packages:
 
   /async/3.2.4:
     resolution: {integrity: sha512-iAB+JbDEGXhyIUavoDl9WP/Jj106Kz9DEn1DPgYw5ruDn0e3Wgi3sKFm55sASdGBNOQB8F59d9qQ7deqrHA8wQ==}
+    dev: true
 
   /asynckit/0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
@@ -2166,14 +2136,6 @@ packages:
     resolution: {integrity: sha512-36yxDn5H7OFZQla0/jFJmbIKTdZAQHngCedGxiMmpNfEZM0sdEeT+WczLQrjK6D7o2aiyLYDnkw0R3JK0Qv1RQ==}
     dev: true
 
-  /fluent-ffmpeg/2.1.2:
-    resolution: {integrity: sha512-IZTB4kq5GK0DPp7sGQ0q/BWurGHffRtQQwVkiqDgeO6wYJLLV5ZhgNOQ65loZxxuPMKZKZcICCUnaGtlxBiR0Q==}
-    engines: {node: '>=0.8.0'}
-    dependencies:
-      async: 3.2.4
-      which: 1.3.1
-    dev: false
-
   /form-data/4.0.0:
     resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
     engines: {node: '>= 6'}
@@ -2555,6 +2517,7 @@ packages:
 
   /isexe/2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
+    dev: true
 
   /jake/10.8.7:
     resolution: {integrity: sha512-ZDi3aP+fG/LchyBzUM804VjddnwfSfsdeYkwt8NcbKRvo4rFkjhs456iLFn3k2ZUWvNe4i48WACDbza8fhq2+w==}
@@ -3986,13 +3949,6 @@ packages:
     optionalDependencies:
       fsevents: 2.3.3
     dev: true
-
-  /which/1.3.1:
-    resolution: {integrity: sha512-HxJdYWq1MTIQbJ3nw0cqssHoTNU267KlrDuGZ1WYlxDStUtKUhOaJmh112/TZmHxxUfuJqPXSOm7tDyas0OSIQ==}
-    hasBin: true
-    dependencies:
-      isexe: 2.0.0
-    dev: false
 
   /which/2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}

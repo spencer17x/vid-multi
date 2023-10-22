@@ -1,6 +1,5 @@
 import { spawnSync } from 'child_process';
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
-import ffmpeg from 'fluent-ffmpeg';
 import fs from 'fs';
 import path from 'path';
 
@@ -23,45 +22,50 @@ let win: BrowserWindow | null;
 const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL'];
 
 const runCMD = (command: string, args: string[]) => {
-	return spawnSync(command, args, {
+	const result = spawnSync(command, args, {
 		stdio: 'inherit',
 		shell: true
 	});
+	if (result.error) {
+		const error =
+			result.error instanceof Error
+				? result.error
+				: new Error(`Unknown error: ${result.error}`);
+		return Promise.reject(error);
+	} else {
+		if (result.status === 0) {
+			return Promise.resolve();
+		} else {
+			return Promise.reject(
+				new TypeError(`命令执行失败，退出码为:${result.status}`)
+			);
+		}
+	}
 };
 
 const ipcGenerateImages = () => {
 	ipcMain.handle(
 		'generateImages',
 		async (_event, params: GenerateImagesParams) => {
-			const { filePath, count, outputDir } = params;
+			const { filePath, outputDir, fps } = params;
 			fs.mkdirSync(outputDir, { recursive: true });
 
-			return new Promise((resolve, reject) => {
-				ffmpeg(filePath)
-					.on('filenames', (filenames) => {
-						console.log('Will generate ' + filenames.join(', '));
-					})
-					.on('end', () => {
-						resolve(outputDir);
-					})
-					.on('error', (error) => {
-						reject(error);
-					})
-					.screenshots({
-						count,
-						folder: outputDir,
-						filename: '%i.png'
-					});
-			});
+			return runCMD('ffmpeg', [
+				'-i',
+				filePath,
+				'-vf',
+				`fps=${fps}`,
+				path.join(outputDir, 'output_%d.jpg')
+			]);
 		}
 	);
 };
 
 const ipcOpenFolder = () => {
-	ipcMain.on('openFolder', (_event, dir: string) => {
+	ipcMain.handle('openFolder', async (_event, dir: string) => {
 		const openFolderCommand =
 			process.platform === 'win32' ? 'explorer' : 'open';
-		runCMD(openFolderCommand, [dir]);
+		return runCMD(openFolderCommand, [dir]);
 	});
 };
 

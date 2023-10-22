@@ -22,14 +22,14 @@ declare namespace NodeJS {
 
 interface GenerateImagesParams {
 	filePath: string;
-	count: number;
+	fps: number;
 	filename: string;
 	outputDir: string;
 }
 
 interface ElectronAPI {
 	generateImages: (params: GenerateImagesParams) => Promise<string>;
-	openFolder: (dir: string) => void;
+	openFolder: (dir: string) => Promise<void>;
 	getOutputDir: () => Promise<string>;
 	setOutputDir: () => Promise<string>;
 }
