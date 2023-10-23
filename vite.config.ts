@@ -12,14 +12,7 @@ export default defineConfig({
 		electron({
 			main: {
 				// Shortcut of `build.lib.entry`.
-				entry: 'electron/main.ts',
-				vite: {
-					resolve: {
-						alias: {
-							'./lib-cov/fluent-ffmpeg': './lib/fluent-ffmpeg'
-						}
-					}
-				}
+				entry: 'electron/main.ts'
 			},
 			preload: {
 				// Shortcut of `build.rollupOptions.input`.
