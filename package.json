@@ -5,7 +5,9 @@
     "dev": "vite",
     "build": "tsc && vite build && electron-builder",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "ci-publish": "ar-changelog publish",
+    "release": "ar-changelog release"
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
@@ -21,6 +23,7 @@
     "@typescript-eslint/eslint-plugin": "^6.6.0",
     "@typescript-eslint/parser": "^6.6.0",
     "@vitejs/plugin-react": "^4.0.4",
+    "ar-changelog": "^4.0.2",
     "electron": "^26.1.0",
     "electron-builder": "^24.6.4",
     "eslint": "^8.48.0",
