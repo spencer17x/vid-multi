@@ -6,18 +6,14 @@ export const runCMD = (command: string, args: string[]) => {
 		shell: true
 	});
 	if (result.error) {
-		const error =
-			result.error instanceof Error
-				? result.error
-				: new Error(`Unknown error: ${result.error}`);
-		return Promise.reject(error);
+		if (result.error instanceof Error) {
+			return Promise.reject(result.error);
+		}
+		return Promise.reject(new Error(JSON.stringify(result)));
 	} else {
 		if (result.status === 0) {
-			return Promise.resolve();
-		} else {
-			return Promise.reject(
-				new TypeError(`命令执行失败，退出码为:${result.status}`)
-			);
+			return Promise.resolve(null);
 		}
+		return Promise.reject(new Error(`Exit code ${result.status}`));
 	}
 };

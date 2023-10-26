@@ -5,7 +5,8 @@ const electronAPI: ElectronAPI = {
 	generateImages: (params) => ipcRenderer.invoke('generateImages', params),
 	openFolder: (dir) => ipcRenderer.invoke('openFolder', dir),
 	getOutputDir: () => ipcRenderer.invoke('getOutputDir'),
-	setOutputDir: () => ipcRenderer.invoke('setOutputDir')
+	setOutputDir: () => ipcRenderer.invoke('setOutputDir'),
+	getMediaInfo: () => ipcRenderer.invoke('getMediaInfo')
 };
 contextBridge.exposeInMainWorld('ipcRenderer', withPrototype(ipcRenderer));
 contextBridge.exposeInMainWorld('electronAPI', electronAPI);

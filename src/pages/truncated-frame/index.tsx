@@ -47,7 +47,13 @@ export const TruncatedFrame = () => {
 	}, []);
 
 	useEffect(() => {
-		MediaInfoFactory({ format: 'object' }).then((mi) => {
+		MediaInfoFactory({
+			format: 'object',
+			locateFile: (url, scriptDirectory) => {
+				console.log('url', url, scriptDirectory);
+				return url;
+			}
+		}).then((mi) => {
 			miRef.current = mi;
 		});
 

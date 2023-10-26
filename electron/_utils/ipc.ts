@@ -1,4 +1,4 @@
-import { dialog, ipcMain } from 'electron';
+import { app, dialog, ipcMain } from 'electron';
 import fs from 'fs';
 import path from 'path';
 
@@ -31,8 +31,8 @@ export const ipcOpenFolder = () => {
 };
 
 export const ipcGetOutputDir = () => {
-	ipcMain.handle('getOutputDir', async () => {
-		const outputDir = path.resolve(__dirname, '../output');
+	ipcMain.handle('getOutputDir', () => {
+		const outputDir = app.getPath('downloads');
 		fs.mkdirSync(outputDir, { recursive: true });
 		return outputDir;
 	});
@@ -50,9 +50,24 @@ export const ipcSetOutputDir = () => {
 	});
 };
 
+export const ipcGetMediaInfo = () => {
+	ipcMain.handle('getMediaInfo', async (_event, filePath: string) => {
+		return runCMD('ffprobe', [
+			'-v',
+			'quiet',
+			'-print_format',
+			'json',
+			'-show_format',
+			'-show_streams',
+			filePath
+		]);
+	});
+};
+
 export const ipc = () => {
 	ipcGenerateImages();
 	ipcOpenFolder();
 	ipcGetOutputDir();
 	ipcSetOutputDir();
+	ipcGetMediaInfo();
 };
