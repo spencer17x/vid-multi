@@ -32,7 +32,6 @@ interface ElectronAPI {
 	openFolder: (dir: string) => Promise<void>;
 	getOutputDir: () => Promise<string>;
 	setOutputDir: () => Promise<string>;
-	getMediaInfo: (filePath: string) => Promise<unknown>;
 }
 
 // Used in Renderer process, expose in `preload.ts`

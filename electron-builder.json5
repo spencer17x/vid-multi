@@ -41,5 +41,12 @@
       "AppImage"
     ],
     "artifactName": "${productName}-Linux-${version}.${ext}"
-  }
+  },
+  publish: [
+    {
+      provider: "github",
+      owner: "spencer17x",
+      repo: "vid-multi",
+    }
+  ]
 }

@@ -1,7 +1,7 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
 
-import { ipc } from './_utils';
+import { ipc, setUpUpdater } from './_utils';
 
 // The built directory structure
 //
@@ -44,6 +44,7 @@ function createWindow() {
 	}
 
 	ipc();
+	setUpUpdater(win);
 }
 
 // Quit when all windows are closed, except on macOS. There, it's common

@@ -50,24 +50,9 @@ export const ipcSetOutputDir = () => {
 	});
 };
 
-export const ipcGetMediaInfo = () => {
-	ipcMain.handle('getMediaInfo', async (_event, filePath: string) => {
-		return runCMD('ffprobe', [
-			'-v',
-			'quiet',
-			'-print_format',
-			'json',
-			'-show_format',
-			'-show_streams',
-			filePath
-		]);
-	});
-};
-
 export const ipc = () => {
 	ipcGenerateImages();
 	ipcOpenFolder();
 	ipcGetOutputDir();
 	ipcSetOutputDir();
-	ipcGetMediaInfo();
 };
