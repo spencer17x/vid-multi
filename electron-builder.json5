@@ -7,7 +7,7 @@
   "asar": true,
   "productName": "vid-multi",
   "directories": {
-    "output": "release/${version}"
+    "output": "release"
   },
   "files": [
     "dist",

@@ -1,7 +1,7 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
 
-import { ipc, setUpUpdater } from './_utils';
+import { ipc, isDev, setUpUpdater } from './_utils';
 
 // The built directory structure
 //
@@ -29,7 +29,9 @@ function createWindow() {
 		}
 	});
 
-	win.webContents.openDevTools();
+	if (!isDev) {
+		win.webContents.openDevTools();
+	}
 
 	// Test active push message to Renderer-process.
 	win.webContents.on('did-finish-load', () => {

@@ -12,7 +12,7 @@ const message = {
 };
 
 if (isDev) {
-	autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml');
+	autoUpdater.updateConfigPath = path.join(__dirname, '../dev-app-update.yml');
 }
 
 export const setUpUpdater = (mainWindow: BrowserWindow) => {
