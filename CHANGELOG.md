@@ -1,3 +1,12 @@
+## [0.0.8](https://github.com/spencer17x/vid-multi/compare/v0.0.7...v0.0.8) (2023-10-27)
+
+
+### Features
+
+* mac zip ([965bf0d](https://github.com/spencer17x/vid-multi/commit/965bf0d2d733ef860bac470922a216561e91e4a4))
+
+
+
 ## [0.0.7](https://github.com/spencer17x/vid-multi/compare/v0.0.6...v0.0.7) (2023-10-27)
 
 
