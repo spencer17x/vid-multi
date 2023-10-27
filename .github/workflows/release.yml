@@ -42,4 +42,5 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           body: |
             Please refer to [CHANGELOG.md](https://github.com/spencer17x/vid-multi/blob/main/CHANGELOG.md) from details.
-          files: release/*
+          files: |
+            release/*
