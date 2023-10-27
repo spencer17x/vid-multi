@@ -39,7 +39,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          draft: true
+          draft: false
           token: ${{ secrets.ACCESS_TOKEN }}
           body: |
             Please refer to [CHANGELOG.md](https://github.com/spencer17x/vid-multi/blob/main/CHANGELOG.md) from details.
