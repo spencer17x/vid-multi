@@ -1,7 +1,6 @@
 import './styles/index.scss';
 
 import { ConfigProvider } from 'antd';
-import zhCN from 'antd/locale/zh_CN';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import ReactDOM from 'react-dom/client';
@@ -11,7 +10,7 @@ import App from './App.tsx';
 dayjs.extend(duration);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-	<ConfigProvider locale={zhCN}>
+	<ConfigProvider>
 		<App />
 	</ConfigProvider>
 );

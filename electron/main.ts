@@ -29,7 +29,7 @@ function createWindow() {
 		}
 	});
 
-	if (!isDev) {
+	if (isDev) {
 		win.webContents.openDevTools();
 	}
 
