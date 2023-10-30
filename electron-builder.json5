@@ -49,5 +49,6 @@
       owner: "spencer17x",
       repo: "vid-multi",
     }
-  ]
+  ],
+  icon: "public/logo.png",
 }
