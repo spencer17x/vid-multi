@@ -1,3 +1,14 @@
+## [0.0.9](https://github.com/spencer17x/vid-multi/compare/v0.0.8...v0.0.9) (2023-10-31)
+
+
+### Features
+
+* auto update ([7ca280b](https://github.com/spencer17x/vid-multi/commit/7ca280b5893dec2b33d32255fb5dab6672a7cd07))
+* update logo ([6528aea](https://github.com/spencer17x/vid-multi/commit/6528aea5309e0a261fdc0735c22a12173fb9e125))
+* use frames ([213ce3f](https://github.com/spencer17x/vid-multi/commit/213ce3f244c2be4468d9441942cbf64d7cc32770))
+
+
+
 ## [0.0.8](https://github.com/spencer17x/vid-multi/compare/v0.0.7...v0.0.8) (2023-10-27)
 
 
