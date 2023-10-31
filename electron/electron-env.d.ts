@@ -22,7 +22,7 @@ declare namespace NodeJS {
 
 interface GenerateImagesParams {
 	filePath: string;
-	fps: number;
+	frames: number;
 	filename: string;
 	outputDir: string;
 }

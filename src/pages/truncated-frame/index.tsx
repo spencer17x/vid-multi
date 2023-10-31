@@ -37,7 +37,7 @@ export const TruncatedFrame = () => {
 	const [result, setResult] = useState<MediaInfoType>();
 	const [videoFile, setVideoFile] = useState<File>();
 	const [generating, setGenerating] = useState<boolean>(false);
-	const [fps, setFPS] = useState<number>(1);
+	const [frames, setFrames] = useState<number>(1);
 	const [outputDir, setOutputDir] = useState<string>('');
 
 	useEffect(() => {
@@ -89,7 +89,7 @@ export const TruncatedFrame = () => {
 
 			await window.electronAPI.generateImages({
 				filePath,
-				fps,
+				frames,
 				filename,
 				outputDir: fullOutputDir
 			});
@@ -109,8 +109,8 @@ export const TruncatedFrame = () => {
 		}
 	};
 
-	const onFPSChange: InputNumberProps<number>['onChange'] = (value) => {
-		setFPS(value || 1);
+	const onFramesChange: InputNumberProps<number>['onChange'] = (value) => {
+		setFrames(value || 1);
 	};
 
 	const onChangeDirectoryClick: ButtonProps['onClick'] = async () => {
@@ -188,9 +188,9 @@ export const TruncatedFrame = () => {
 								pagination={false}
 							/>
 							<InputNumber
-								addonAfter="fps"
-								value={fps}
-								onChange={onFPSChange}
+								addonAfter="frames"
+								value={frames}
+								onChange={onFramesChange}
 							/>
 							<Button
 								loading={generating}

@@ -8,14 +8,16 @@ export const ipcGenerateImages = () => {
 	ipcMain.handle(
 		'generateImages',
 		async (_event, params: GenerateImagesParams) => {
-			const { filePath, outputDir, fps } = params;
+			const { filePath, outputDir, frames } = params;
 			fs.mkdirSync(outputDir, { recursive: true });
 
 			return runCMD('ffmpeg', [
 				'-i',
 				filePath,
 				'-vf',
-				`fps=${fps}`,
+				'"select=eq(pict_type\\,I)"',
+				'-vframes',
+				`${frames}`,
 				path.join(outputDir, 'output_%d.jpg')
 			]);
 		}
