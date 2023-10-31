@@ -86,12 +86,14 @@ export const TruncatedFrame = () => {
 				/\.[^.]*$/,
 				''
 			)}`;
+
 			await window.electronAPI.generateImages({
 				filePath,
 				fps,
 				filename,
 				outputDir: fullOutputDir
 			});
+
 			Modal.confirm({
 				title: 'Generate success, open or not',
 				onOk() {
