@@ -1,18 +1,25 @@
-import { Modal, Progress } from 'antd';
+import { Modal, Progress, Spin } from 'antd';
 
 import { useUpdater } from './hooks/useUpdater.ts';
 import { TruncatedFrame } from './pages/truncated-frame';
 
 function App() {
-	const { open, percent } = useUpdater();
+	const { percent, status } = useUpdater();
 
 	return (
-		<>
-			<Modal title="Updating..." open={open} footer={null} closable={false}>
-				<Progress percent={percent} />
-			</Modal>
-			<TruncatedFrame />
-		</>
+		<Spin spinning={status === 'checking'}>
+			<div style={{ width: '100vw', height: '100vh' }}>
+				<Modal
+					title="Updating..."
+					open={status === 'updateAvailable'}
+					footer={null}
+					closable={false}
+				>
+					<Progress percent={percent} />
+				</Modal>
+				<TruncatedFrame />
+			</div>
+		</Spin>
 	);
 }
 

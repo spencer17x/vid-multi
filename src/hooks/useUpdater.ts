@@ -2,15 +2,20 @@ import { message, Modal } from 'antd';
 import { ProgressInfo } from 'electron-updater';
 import { useEffect, useState } from 'react';
 
-const messageTips = {
+export type UpdateStatus =
+	| 'checking'
+	| 'updateAvailable'
+	| 'updateNotAvailable';
+
+const messageTips: Record<UpdateStatus, string> = {
 	checking: 'Checking for updates...',
 	updateAvailable: 'Update available, whether to update',
 	updateNotAvailable: 'Update not available'
 };
 
 export const useUpdater = () => {
-	const [open, setOpen] = useState(false);
 	const [percent, setPercent] = useState(0);
+	const [status, setStatus] = useState<UpdateStatus | null>(null);
 
 	useEffect(() => {
 		window.ipcRenderer.send('checkAppVersion');
@@ -25,24 +30,20 @@ export const useUpdater = () => {
 		window.ipcRenderer.send('checkForUpdates');
 
 		window.ipcRenderer.on('checkingForUpdate', async () => {
-			await message.loading({
-				key: 'checkingForUpdate',
-				content: messageTips.checking,
-				duration: 0
-			});
+			setStatus('checking');
 		});
 		window.ipcRenderer.on('updateAvailable', async () => {
-			message.destroy('checkingForUpdate');
+			setStatus('updateAvailable');
 			Modal.confirm({
 				title: messageTips.updateAvailable,
 				onOk() {
-					setOpen(true);
+					setStatus(null);
 					window.ipcRenderer.send('downloadUpdate');
 				}
 			});
 		});
 		window.ipcRenderer.on('updateNotAvailable', async () => {
-			message.destroy('checkingForUpdate');
+			setStatus('updateNotAvailable');
 			Modal.info({
 				title: messageTips.updateNotAvailable
 			});
@@ -65,7 +66,7 @@ export const useUpdater = () => {
 	}, []);
 
 	return {
-		open,
-		percent
+		percent,
+		status
 	};
 };
