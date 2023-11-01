@@ -1,3 +1,13 @@
+## [0.0.10](https://github.com/spencer17x/vid-multi/compare/v0.0.9...v0.0.10) (2023-11-01)
+
+
+### Features
+
+* check update loading ([110781d](https://github.com/spencer17x/vid-multi/commit/110781d3124bb624d07354f5994f854e4c9cd839))
+* local frame capture without ffmpeg ([4fedde7](https://github.com/spencer17x/vid-multi/commit/4fedde70ea171e5a46876cb45ebbf3aafce25b23))
+
+
+
 ## [0.0.9](https://github.com/spencer17x/vid-multi/compare/v0.0.8...v0.0.9) (2023-10-31)
 
 
