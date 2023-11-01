@@ -10,7 +10,6 @@ import {
 	message,
 	Modal,
 	Space,
-	Spin,
 	Table,
 	Upload,
 	UploadProps
@@ -74,6 +73,46 @@ export const TruncatedFrame = () => {
 		return false;
 	};
 
+	const videoToImages = (): Promise<string[]> => {
+		return new Promise((resolve, reject) => {
+			if (!videoFile) {
+				return reject(new Error('videoFile is not loaded'));
+			}
+
+			const video = document.createElement('video');
+			let currentTime = 0;
+			let frameCount = 0;
+			const gap = (generalInfo?.Duration || 1) / frames;
+			const images: string[] = [];
+
+			video.src = URL.createObjectURL(videoFile);
+			video.addEventListener('timeupdate', (event) => {
+				console.log('timeupdate', event, currentTime, gap);
+
+				const canvas = document.createElement('canvas');
+				canvas.width = video.videoWidth;
+				canvas.height = video.videoHeight;
+				canvas
+					.getContext('2d')
+					?.drawImage(video, 0, 0, canvas.width, canvas.height);
+				images.push(canvas.toDataURL());
+
+				currentTime += gap;
+				frameCount++;
+
+				if (frameCount >= frames) {
+					video.remove();
+					return resolve(images);
+				}
+				video.currentTime = currentTime;
+			});
+			video.addEventListener('loadeddata', (event) => {
+				console.log('loadeddata', event);
+				video.currentTime = currentTime;
+			});
+		});
+	};
+
 	const onStartFrameCutting: ButtonProps['onClick'] = async () => {
 		if (!videoFile) {
 			throw new Error('videoFile is not loaded');
@@ -87,11 +126,13 @@ export const TruncatedFrame = () => {
 				''
 			)}`;
 
+			const images = await videoToImages();
 			await window.electronAPI.generateImages({
-				filePath,
 				frames,
+				filePath,
 				filename,
-				outputDir: fullOutputDir
+				outputDir: fullOutputDir,
+				images
 			});
 
 			Modal.confirm({
@@ -154,55 +195,53 @@ export const TruncatedFrame = () => {
 
 	return (
 		<div className="truncated-frame">
-			<Spin spinning={false}>
-				<div className="truncated-frame-container">
-					<Space.Compact style={{ width: '100%' }}>
-						<Input disabled={true} value={outputDir} />
-						<Button type="primary" onClick={onChangeDirectoryClick}>
-							Change directory
-						</Button>
-						<Button type="primary" onClick={openDirectory}>
-							Open directory
-						</Button>
-					</Space.Compact>
+			<div className="truncated-frame-container">
+				<Space.Compact style={{ width: '100%' }}>
+					<Input disabled={true} value={outputDir} />
+					<Button type="primary" onClick={onChangeDirectoryClick}>
+						Change directory
+					</Button>
+					<Button type="primary" onClick={openDirectory}>
+						Open directory
+					</Button>
+				</Space.Compact>
 
-					<Dragger
-						className="truncated-frame-dragger"
-						name="file"
-						accept=".mp4"
-						beforeUpload={onBeforeUpload}
-					>
-						<p className="ant-upload-drag-icon">
-							<InboxOutlined />
-						</p>
-						<p className="ant-upload-text">
-							Click or drag file to this area to upload
-						</p>
-					</Dragger>
+				<Dragger
+					className="truncated-frame-dragger"
+					name="file"
+					accept=".mp4"
+					beforeUpload={onBeforeUpload}
+				>
+					<p className="ant-upload-drag-icon">
+						<InboxOutlined />
+					</p>
+					<p className="ant-upload-text">
+						Click or drag file to this area to upload
+					</p>
+				</Dragger>
 
-					{uploaded && (
-						<div className="truncated-frame-tools">
-							<Table
-								dataSource={dataSource}
-								columns={columns}
-								pagination={false}
-							/>
-							<InputNumber
-								addonAfter="frames"
-								value={frames}
-								onChange={onFramesChange}
-							/>
-							<Button
-								loading={generating}
-								type="primary"
-								onClick={onStartFrameCutting}
-							>
-								Start frame cutting
-							</Button>
-						</div>
-					)}
-				</div>
-			</Spin>
+				{uploaded && (
+					<div className="truncated-frame-tools">
+						<Table
+							dataSource={dataSource}
+							columns={columns}
+							pagination={false}
+						/>
+						<InputNumber
+							addonAfter="frames"
+							value={frames}
+							onChange={onFramesChange}
+						/>
+						<Button
+							loading={generating}
+							type="primary"
+							onClick={onStartFrameCutting}
+						>
+							Start
+						</Button>
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };

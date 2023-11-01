@@ -6,10 +6,7 @@ export const runCMD = (command: string, args: string[]) => {
 		shell: true
 	});
 	if (result.error) {
-		if (result.error instanceof Error) {
-			return Promise.reject(result.error);
-		}
-		return Promise.reject(new Error(JSON.stringify(result)));
+		return Promise.reject(result.error);
 	} else {
 		if (result.status === 0) {
 			return Promise.resolve(null);

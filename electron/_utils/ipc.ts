@@ -8,8 +8,42 @@ export const ipcGenerateImages = () => {
 	ipcMain.handle(
 		'generateImages',
 		async (_event, params: GenerateImagesParams) => {
-			const { filePath, outputDir, frames } = params;
+			const { filePath, outputDir, frames, images } = params;
 			fs.mkdirSync(outputDir, { recursive: true });
+
+			if (images?.length) {
+				// images.forEach((base64, index) => {
+				// 	const dataBuffer = Buffer.from(
+				// 		base64.replace(/^data:image\/\w+;base64,/, ''),
+				// 		'base64'
+				// 	);
+				// 	fs.writeFileSync(
+				// 		path.join(outputDir, `output_${index}.jpg`),
+				// 		dataBuffer
+				// 	);
+				// });
+
+				const promises = images.map((base64, index) => {
+					return new Promise((resolve, reject) => {
+						const dataBuffer = Buffer.from(
+							base64.replace(/^data:image\/\w+;base64,/, ''),
+							'base64'
+						);
+						fs.writeFile(
+							path.join(outputDir, `output_${index}.jpg`),
+							dataBuffer,
+							(err) => {
+								if (err) {
+									reject(err);
+								} else {
+									resolve(null);
+								}
+							}
+						);
+					});
+				});
+				return Promise.all(promises);
+			}
 
 			return runCMD('ffmpeg', [
 				'-i',

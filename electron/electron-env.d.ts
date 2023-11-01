@@ -25,10 +25,11 @@ interface GenerateImagesParams {
 	frames: number;
 	filename: string;
 	outputDir: string;
+	images?: string[];
 }
 
 interface ElectronAPI {
-	generateImages: (params: GenerateImagesParams) => Promise<string>;
+	generateImages: (params: GenerateImagesParams) => Promise<void>;
 	openFolder: (dir: string) => Promise<void>;
 	getOutputDir: () => Promise<string>;
 	setOutputDir: () => Promise<string>;
