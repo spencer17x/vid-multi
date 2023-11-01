@@ -12,17 +12,6 @@ export const generateImages = () => {
 			fs.mkdirSync(outputDir, { recursive: true });
 
 			if (images?.length) {
-				// images.forEach((base64, index) => {
-				// 	const dataBuffer = Buffer.from(
-				// 		base64.replace(/^data:image\/\w+;base64,/, ''),
-				// 		'base64'
-				// 	);
-				// 	fs.writeFileSync(
-				// 		path.join(outputDir, `output_${index}.jpg`),
-				// 		dataBuffer
-				// 	);
-				// });
-
 				const promises = images.map((base64, index) => {
 					return new Promise((resolve, reject) => {
 						const dataBuffer = Buffer.from(
