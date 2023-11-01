@@ -16,6 +16,6 @@ A video processing tool
 * [x] Support customizing the number of saved frames
 * [x] Support auto update
 * [ ] Support video preview
-* [ ] ffmpeg is not required
+* [x] ffmpeg is not required
 
 
