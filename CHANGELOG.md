@@ -1,3 +1,12 @@
+## [0.0.11](https://github.com/spencer17x/vid-multi/compare/v0.0.10...v0.0.11) (2023-11-01)
+
+
+### Features
+
+* update build config ([9d69269](https://github.com/spencer17x/vid-multi/commit/9d69269a1df38dd34ac43fdd5502f180e92dcbd0))
+
+
+
 ## [0.0.10](https://github.com/spencer17x/vid-multi/compare/v0.0.9...v0.0.10) (2023-11-01)
 
 
