@@ -17,5 +17,6 @@ A video processing tool
 * [x] Support auto update
 * [ ] Support video preview
 * [x] ffmpeg is not required
+* [ ] More video formats are supported
 
 
