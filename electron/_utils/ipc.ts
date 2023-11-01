@@ -4,7 +4,7 @@ import path from 'path';
 
 import { runCMD } from './cmd';
 
-export const ipcGenerateImages = () => {
+export const generateImages = () => {
 	ipcMain.handle(
 		'generateImages',
 		async (_event, params: GenerateImagesParams) => {
@@ -58,7 +58,7 @@ export const ipcGenerateImages = () => {
 	);
 };
 
-export const ipcOpenFolder = () => {
+export const openFolder = () => {
 	ipcMain.handle('openFolder', async (_event, dir: string) => {
 		const openFolderCommand =
 			process.platform === 'win32' ? 'explorer' : 'open';
@@ -66,7 +66,7 @@ export const ipcOpenFolder = () => {
 	});
 };
 
-export const ipcGetOutputDir = () => {
+export const getOutputDir = () => {
 	ipcMain.handle('getOutputDir', () => {
 		const outputDir = app.getPath('downloads');
 		fs.mkdirSync(outputDir, { recursive: true });
@@ -74,7 +74,7 @@ export const ipcGetOutputDir = () => {
 	});
 };
 
-export const ipcSetOutputDir = () => {
+export const setOutputDir = () => {
 	ipcMain.handle('setOutputDir', async () => {
 		const result = await dialog.showOpenDialog({
 			properties: ['openDirectory']
@@ -86,9 +86,9 @@ export const ipcSetOutputDir = () => {
 	});
 };
 
-export const ipc = () => {
-	ipcGenerateImages();
-	ipcOpenFolder();
-	ipcGetOutputDir();
-	ipcSetOutputDir();
+export const setUpIPC = () => {
+	generateImages();
+	openFolder();
+	getOutputDir();
+	setOutputDir();
 };

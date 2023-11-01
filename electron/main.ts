@@ -1,7 +1,7 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
 
-import { ipc, isDev, setUpUpdater } from './_utils';
+import { isDev, setUpIPC, setUpUpdater } from './_utils';
 
 // The built directory structure
 //
@@ -45,7 +45,7 @@ function createWindow() {
 		win.loadFile(path.join(process.env.DIST, 'index.html'));
 	}
 
-	ipc();
+	setUpIPC();
 	setUpUpdater(win);
 }
 
