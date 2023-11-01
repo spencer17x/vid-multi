@@ -15,13 +15,17 @@
   ],
   "mac": {
     "target": [
-      "dmg",
-      "zip"
+      {
+        target: "dmg",
+        arch: ["x64", "arm64"],
+      },
+      "zip",
     ],
-    "artifactName": "${productName}-Mac-${version}-Installer.${ext}"
+    "artifactName": "${productName}-Mac-${arch}-${version}-Installer.${ext}"
   },
   "win": {
     "target": [
+      "zip",
       {
         "target": "nsis",
         "arch": [
@@ -39,7 +43,8 @@
   },
   "linux": {
     "target": [
-      "AppImage"
+      "AppImage",
+      "zip"
     ],
     "artifactName": "${productName}-Linux-${version}.${ext}"
   },
