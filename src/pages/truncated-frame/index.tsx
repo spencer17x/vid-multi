@@ -193,6 +193,56 @@ export const TruncatedFrame = () => {
 		{ title: 'Format', dataIndex: 'Format', key: 'Format' }
 	];
 
+	const renderVideo = () => {
+		if (uploaded && videoFile) {
+			return (
+				<video
+					width={300}
+					src={URL.createObjectURL(videoFile)}
+					autoPlay={true}
+				/>
+			);
+		}
+		return (
+			<Dragger
+				className="truncated-frame-dragger"
+				name="file"
+				accept=".mp4"
+				beforeUpload={onBeforeUpload}
+			>
+				<p className="ant-upload-drag-icon">
+					<InboxOutlined />
+				</p>
+				<p className="ant-upload-text">
+					Click or drag file to this area to upload
+				</p>
+			</Dragger>
+		);
+	};
+
+	const renderTools = () => {
+		if (!uploaded) {
+			return null;
+		}
+		return (
+			<div className="truncated-frame-tools">
+				<Table dataSource={dataSource} columns={columns} pagination={false} />
+				<InputNumber
+					addonAfter="frames"
+					value={frames}
+					onChange={onFramesChange}
+				/>
+				<Button
+					loading={generating}
+					type="primary"
+					onClick={onStartFrameCutting}
+				>
+					Start
+				</Button>
+			</div>
+		);
+	};
+
 	return (
 		<div className="truncated-frame">
 			<div className="truncated-frame-container">
@@ -206,41 +256,9 @@ export const TruncatedFrame = () => {
 					</Button>
 				</Space.Compact>
 
-				<Dragger
-					className="truncated-frame-dragger"
-					name="file"
-					accept=".mp4"
-					beforeUpload={onBeforeUpload}
-				>
-					<p className="ant-upload-drag-icon">
-						<InboxOutlined />
-					</p>
-					<p className="ant-upload-text">
-						Click or drag file to this area to upload
-					</p>
-				</Dragger>
+				{renderVideo()}
 
-				{uploaded && (
-					<div className="truncated-frame-tools">
-						<Table
-							dataSource={dataSource}
-							columns={columns}
-							pagination={false}
-						/>
-						<InputNumber
-							addonAfter="frames"
-							value={frames}
-							onChange={onFramesChange}
-						/>
-						<Button
-							loading={generating}
-							type="primary"
-							onClick={onStartFrameCutting}
-						>
-							Start
-						</Button>
-					</div>
-				)}
+				{renderTools()}
 			</div>
 		</div>
 	);
