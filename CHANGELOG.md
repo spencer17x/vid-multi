@@ -1,3 +1,12 @@
+## [0.0.12](https://github.com/spencer17x/vid-multi/compare/v0.0.11...v0.0.12) (2023-11-02)
+
+
+### Features
+
+* video preview ([843be3b](https://github.com/spencer17x/vid-multi/commit/843be3b1cab5724808541a60f24c329c3671887b))
+
+
+
 ## [0.0.11](https://github.com/spencer17x/vid-multi/compare/v0.0.10...v0.0.11) (2023-11-01)
 
 
