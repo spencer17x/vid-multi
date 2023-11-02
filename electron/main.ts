@@ -1,4 +1,5 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Menu, MenuItem } from 'electron';
+import { autoUpdater } from 'electron-updater';
 import path from 'path';
 
 import { isDev, setUpIPC, setUpUpdater } from './_utils';
@@ -22,6 +23,22 @@ let win: BrowserWindow | null;
 const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL'];
 
 function createWindow() {
+	const menu = app.applicationMenu;
+	menu?.append(
+		new MenuItem({
+			label: 'More',
+			submenu: [
+				{
+					label: 'Check for Updates...',
+					async click() {
+						await autoUpdater.checkForUpdates();
+					}
+				}
+			]
+		})
+	);
+	Menu.setApplicationMenu(menu);
+
 	win = new BrowserWindow({
 		icon: path.join(process.env.VITE_PUBLIC, 'logo.png'),
 		webPreferences: {

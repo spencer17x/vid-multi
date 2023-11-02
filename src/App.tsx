@@ -1,4 +1,7 @@
-import { Modal, Progress, Spin } from 'antd';
+import './app.scss';
+
+import { message, Modal, Progress } from 'antd';
+import { useEffect } from 'react';
 
 import { useUpdater } from './hooks/useUpdater.ts';
 import { TruncatedFrame } from './pages/truncated-frame';
@@ -6,20 +9,27 @@ import { TruncatedFrame } from './pages/truncated-frame';
 function App() {
 	const { percent, status } = useUpdater();
 
+	useEffect(() => {
+		if (status === 'checking') {
+			const hide = message.loading('Checking for updates...', 0);
+			return () => {
+				hide();
+			};
+		}
+	}, [status]);
+
 	return (
-		<Spin spinning={status === 'checking'}>
-			<div style={{ width: '100vw', height: '100vh' }}>
-				<Modal
-					title="Updating..."
-					open={status === 'updateAvailable'}
-					footer={null}
-					closable={false}
-				>
-					<Progress percent={percent} />
-				</Modal>
-				<TruncatedFrame />
-			</div>
-		</Spin>
+		<div className="app">
+			<Modal
+				title="Updating..."
+				open={status === 'updateAvailable'}
+				footer={null}
+				closable={false}
+			>
+				<Progress percent={percent} />
+			</Modal>
+			<TruncatedFrame />
+		</div>
 	);
 }
 

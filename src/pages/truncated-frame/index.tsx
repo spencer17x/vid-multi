@@ -193,13 +193,18 @@ export const TruncatedFrame = () => {
 		{ title: 'Format', dataIndex: 'Format', key: 'Format' }
 	];
 
+	const onReset = () => {
+		setUploaded(false);
+	};
+
 	const renderVideo = () => {
 		if (uploaded && videoFile) {
 			return (
 				<video
 					width={300}
 					src={URL.createObjectURL(videoFile)}
-					autoPlay={true}
+					autoPlay={false}
+					controls={true}
 				/>
 			);
 		}
@@ -232,13 +237,18 @@ export const TruncatedFrame = () => {
 					value={frames}
 					onChange={onFramesChange}
 				/>
-				<Button
-					loading={generating}
-					type="primary"
-					onClick={onStartFrameCutting}
-				>
-					Start
-				</Button>
+				<Space.Compact>
+					<Button
+						loading={generating}
+						type="primary"
+						onClick={onStartFrameCutting}
+					>
+						Start
+					</Button>
+					<Button type="primary" onClick={onReset}>
+						Reset
+					</Button>
+				</Space.Compact>
 			</div>
 		);
 	};
@@ -257,7 +267,6 @@ export const TruncatedFrame = () => {
 				</Space.Compact>
 
 				{renderVideo()}
-
 				{renderTools()}
 			</div>
 		</div>

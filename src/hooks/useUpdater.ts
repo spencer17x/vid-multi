@@ -16,18 +16,16 @@ const messageTips: Record<UpdateStatus, string> = {
 export const useUpdater = () => {
 	const [percent, setPercent] = useState(0);
 	const [status, setStatus] = useState<UpdateStatus | null>(null);
+	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
 		window.ipcRenderer.send('checkAppVersion');
-
 		window.ipcRenderer.on('version', (_event, version: string) => {
 			console.log('version', version);
 		});
 		window.ipcRenderer.on('error', async (_event, error: Error) => {
 			await message.error(error.message);
 		});
-
-		window.ipcRenderer.send('checkForUpdates');
 
 		window.ipcRenderer.on('checkingForUpdate', async () => {
 			setStatus('checking');
@@ -65,8 +63,16 @@ export const useUpdater = () => {
 		);
 	}, []);
 
+	useEffect(() => {
+		if (open) {
+			window.ipcRenderer.send('checkForUpdates');
+		}
+	}, [open]);
+
 	return {
 		percent,
-		status
+		status,
+		open,
+		setOpen
 	};
 };
