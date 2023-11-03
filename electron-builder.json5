@@ -19,7 +19,10 @@
         target: "dmg",
         arch: ["x64", "arm64"],
       },
-      "zip",
+      {
+        target: "zip",
+        arch: ["x64", "arm64"],
+      },
     ],
     "artifactName": "${productName}-Mac-${arch}-${version}-Installer.${ext}"
   },
