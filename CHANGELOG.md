@@ -1,3 +1,12 @@
+## [0.0.13](https://github.com/spencer17x/vid-multi/compare/v0.0.12...v0.0.13) (2023-11-03)
+
+
+### Features
+
+* add arm64 zip ([d129db0](https://github.com/spencer17x/vid-multi/commit/d129db08853c74eb2b84bbdedb058922152a4d2f))
+
+
+
 ## [0.0.12](https://github.com/spencer17x/vid-multi/compare/v0.0.11...v0.0.12) (2023-11-02)
 
 
