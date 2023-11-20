@@ -5,14 +5,12 @@ import { useEffect, useState } from 'react';
 export type UpdateStatus =
 	| 'checking'
 	| 'updateAvailable'
-	| 'updateNotAvailable'
-	| 'downloading';
+	| 'updateNotAvailable';
 
 const messageTips: Record<UpdateStatus, string> = {
 	checking: 'Checking for updates...',
 	updateAvailable: 'Update available, whether to update',
-	updateNotAvailable: 'Update not available',
-	downloading: 'downloading...'
+	updateNotAvailable: 'Update not available'
 };
 
 export const useUpdater = () => {
@@ -37,22 +35,15 @@ export const useUpdater = () => {
 			Modal.confirm({
 				title: messageTips.updateAvailable,
 				onOk() {
-					setStatus('downloading');
 					setStatus(null);
 					window.ipcRenderer.send('downloadUpdate');
-				},
-				onCancel() {
-					setStatus(null);
 				}
 			});
 		});
 		window.ipcRenderer.on('updateNotAvailable', async () => {
 			setStatus('updateNotAvailable');
 			Modal.info({
-				title: messageTips.updateNotAvailable,
-				onCancel() {
-					setStatus(null);
-				}
+				title: messageTips.updateNotAvailable
 			});
 		});
 
