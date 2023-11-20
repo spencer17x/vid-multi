@@ -1,3 +1,13 @@
+## [0.0.14](https://github.com/spencer17x/vid-multi/compare/v0.0.13...v0.0.14) (2023-11-20)
+
+
+### Bug Fixes
+
+* change appid ([2647111](https://github.com/spencer17x/vid-multi/commit/264711117f62758de9f7c61ecf98bb378d6bcae3))
+* update prompt error ([079b97d](https://github.com/spencer17x/vid-multi/commit/079b97d4eb3127a35d838ced12c5fc1ca27af9f3))
+
+
+
 ## [0.0.13](https://github.com/spencer17x/vid-multi/compare/v0.0.12...v0.0.13) (2023-11-03)
 
 
