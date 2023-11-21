@@ -38,7 +38,6 @@ export const useUpdater = () => {
 				title: messageTips.updateAvailable,
 				onOk() {
 					setStatus('downloading');
-					setStatus(null);
 					window.ipcRenderer.send('downloadUpdate');
 				},
 				onCancel() {
@@ -48,11 +47,9 @@ export const useUpdater = () => {
 		});
 		window.ipcRenderer.on('updateNotAvailable', async () => {
 			setStatus('updateNotAvailable');
-			Modal.info({
-				title: messageTips.updateNotAvailable,
-				onCancel() {
-					setStatus(null);
-				}
+			message.info({
+				content: messageTips.updateNotAvailable,
+				duration: 3
 			});
 		});
 
