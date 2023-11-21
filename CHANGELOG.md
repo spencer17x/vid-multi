@@ -1,3 +1,12 @@
+## [0.0.27](https://github.com/spencer17x/vid-multi/compare/v0.0.26...v0.0.27) (2023-11-21)
+
+
+### Bug Fixes
+
+* quitAndInstall ([016b3c7](https://github.com/spencer17x/vid-multi/commit/016b3c7f7d4e91d67789ac29db7f52c5367285f1))
+
+
+
 ## [0.0.26](https://github.com/spencer17x/vid-multi/compare/v0.0.25...v0.0.26) (2023-11-21)
 
 
