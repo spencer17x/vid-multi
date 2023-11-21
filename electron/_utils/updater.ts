@@ -46,7 +46,7 @@ export const setUpUpdater = (mainWindow: BrowserWindow) => {
 		mainWindow.webContents.send('updateDownloaded');
 	});
 
-	ipcMain.on('installUpdate', () => {
+	ipcMain.on('quitAndInstall', () => {
 		autoUpdater.quitAndInstall();
 	});
 	ipcMain.on('checkAppVersion', () => {
