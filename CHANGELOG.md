@@ -1,3 +1,12 @@
+## [0.0.17](https://github.com/spencer17x/vid-multi/compare/v0.0.16...v0.0.17) (2023-11-21)
+
+
+### Reverts
+
+* Revert "Revert "fix: update prompt error"" ([9dd8c25](https://github.com/spencer17x/vid-multi/commit/9dd8c25100d661fcb6199e6c29569b1149f27e35))
+
+
+
 ## [0.0.16](https://github.com/spencer17x/vid-multi/compare/v0.0.15...v0.0.16) (2023-11-21)
 
 
