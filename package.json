@@ -1,6 +1,6 @@
 {
   "name": "vid-multi",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "scripts": {
     "dev": "vite --mode dev",
     "build": "tsc && vite build --mode prod  && electron-builder",
