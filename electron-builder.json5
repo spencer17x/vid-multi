@@ -13,7 +13,7 @@
     "dist-electron"
   ],
   "mac": {
-    appId: "com.electron.${productName}",
+    appId: "com.apple.quarantine",
     "target": [
       {
         target: "dmg",
