@@ -1,3 +1,12 @@
+## [0.0.25](https://github.com/spencer17x/vid-multi/compare/v0.0.24...v0.0.25) (2023-11-21)
+
+
+### Bug Fixes
+
+* update error ([51cafb1](https://github.com/spencer17x/vid-multi/commit/51cafb1c4150d48d529a48262835e7dd46fe6a06))
+
+
+
 ## [0.0.24](https://github.com/spencer17x/vid-multi/compare/v0.0.23...v0.0.24) (2023-11-21)
 
 
