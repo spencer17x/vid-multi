@@ -5,6 +5,7 @@
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
   "asar": true,
   "productName": "vid-multi",
+  "appId": "com.electron.vid-multi",
   "directories": {
     "output": "release"
   },
@@ -13,16 +14,15 @@
     "dist-electron"
   ],
   "mac": {
-    appId: "com.apple.quarantine",
     "target": [
       {
         target: "dmg",
-        arch: ["x64", "arm64"]
+        arch: ["x64", "arm64"],
       },
       {
         target: "zip",
-        arch: ["x64", "arm64"]
-      }
+        arch: ["x64", "arm64"],
+      },
     ],
     "artifactName": "${productName}-Mac-${arch}-${version}-Installer.${ext}"
   },
