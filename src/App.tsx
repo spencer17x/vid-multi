@@ -22,7 +22,7 @@ function App() {
 		<div className="app">
 			<Modal
 				title="Updating..."
-				open={status === 'updateAvailable'}
+				open={status === 'downloading'}
 				footer={null}
 				closable={false}
 			>
