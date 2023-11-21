@@ -1,3 +1,12 @@
+## [0.0.19](https://github.com/spencer17x/vid-multi/compare/v0.0.18...v0.0.19) (2023-11-21)
+
+
+### Bug Fixes
+
+* variable not found ([9b823d2](https://github.com/spencer17x/vid-multi/commit/9b823d25cdb7414f9e262a4c4ee5d912c6a1f336))
+
+
+
 ## [0.0.18](https://github.com/spencer17x/vid-multi/compare/v0.0.17...v0.0.18) (2023-11-21)
 
 
