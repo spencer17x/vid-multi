@@ -1,3 +1,7 @@
+## [0.0.23](https://github.com/spencer17x/vid-multi/compare/v0.0.22...v0.0.23) (2023-11-21)
+
+
+
 ## [0.0.22](https://github.com/spencer17x/vid-multi/compare/v0.0.21...v0.0.22) (2023-11-21)
 
 
