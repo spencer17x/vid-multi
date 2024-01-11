@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import ReactDOM from 'react-dom/client';
 
-import App from './App.tsx';
+import { App } from './app';
 
 dayjs.extend(duration);
 

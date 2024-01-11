@@ -2,11 +2,12 @@ import './app.scss';
 
 import { message, Modal, Progress } from 'antd';
 import { useEffect } from 'react';
+import { RouterProvider } from 'react-router-dom';
 
 import { useUpdater } from './hooks/useUpdater.ts';
-import { TruncatedFrame } from './pages/truncated-frame';
+import { router } from './router';
 
-function App() {
+export const App = () => {
 	const { percent, status } = useUpdater();
 
 	useEffect(() => {
@@ -28,9 +29,7 @@ function App() {
 			>
 				<Progress percent={percent} />
 			</Modal>
-			<TruncatedFrame />
+			<RouterProvider router={router} />
 		</div>
 	);
-}
-
-export default App;
+};

@@ -218,9 +218,7 @@ export const TruncatedFrame = () => {
 				<p className="ant-upload-drag-icon">
 					<InboxOutlined />
 				</p>
-				<p className="ant-upload-text">
-					Click or drag file to this area to upload
-				</p>
+				<p className="ant-upload-text">单击或拖动文件到此区域进行上传</p>
 			</Dragger>
 		);
 	};
@@ -232,21 +230,17 @@ export const TruncatedFrame = () => {
 		return (
 			<div className="truncated-frame-tools">
 				<Table dataSource={dataSource} columns={columns} pagination={false} />
-				<InputNumber
-					addonAfter="frames"
-					value={frames}
-					onChange={onFramesChange}
-				/>
+				<InputNumber addonAfter="帧" value={frames} onChange={onFramesChange} />
 				<Space.Compact>
 					<Button
 						loading={generating}
 						type="primary"
 						onClick={onStartFrameCutting}
 					>
-						Start
+						开始截帧
 					</Button>
 					<Button type="primary" onClick={onReset}>
-						Reset
+						重置
 					</Button>
 				</Space.Compact>
 			</div>
@@ -259,10 +253,10 @@ export const TruncatedFrame = () => {
 				<Space.Compact style={{ width: '100%' }}>
 					<Input disabled={true} value={outputDir} />
 					<Button type="primary" onClick={onChangeDirectoryClick}>
-						Change directory
+						修改目录
 					</Button>
 					<Button type="primary" onClick={openDirectory}>
-						Open directory
+						打开目录
 					</Button>
 				</Space.Compact>
 
